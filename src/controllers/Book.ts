@@ -3,12 +3,13 @@ import mongoose from 'mongoose';
 import Book from '../models/Book';
 
 const createBook = (req: Request, res: Response, next: NextFunction) => {
-    const { author, title } = req.body;
+    const { author, title, category } = req.body;
 
     const book = new Book({
         _id: new mongoose.Types.ObjectId(),
         author,
-        title
+        title,
+        category
     });
 
     return book
@@ -28,6 +29,19 @@ const readBook = (req: Request, res: Response, next: NextFunction) => {
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Book.find()
+        .populate('author')
+        .then((books) => res.status(200).json({ books }))
+        .catch((error) => res.status(500).json({ error }));
+};
+// Devuelve la lista de libros con solo id, category y autor
+const readAllA = (req: Request, res: Response, next: NextFunction) => {
+    let query = {}; // category: 'action' };
+    let projection = {
+        _id: 1,
+        category: 1
+    };
+    return Book.find(query, projection)
+        .populate('author')
         .then((books) => res.status(200).json({ books }))
         .catch((error) => res.status(500).json({ error }));
 };
@@ -59,4 +73,4 @@ const deleteBook = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-export default { createBook, readBook, readAll, updateBook, deleteBook };
+export default { createBook, readBook, readAll, readAllA, updateBook, deleteBook };

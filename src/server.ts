@@ -5,6 +5,7 @@ import { config } from './config/config';
 import Logging from './library/Logging';
 import authorRoutes from './routes/Author';
 import bookRoutes from './routes/Book';
+import cors from 'cors';
 
 const router = express();
 
@@ -40,18 +41,19 @@ const StartServer = () => {
     router.use(express.urlencoded({ extended: true }));
     router.use(express.json());
 
+    router.use(cors());
     /** Rules of our API */
-    router.use((req, res, next) => {
-        res.header('Access-Control-Allow-Origin', '*'); // * Quiere decir que la petición viene de cualquier origen
-        res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    // router.use((req, res, next) => {
+    //     res.header('Access-Control-Allow-Origin', '*'); // * Quiere decir que la petición viene de cualquier origen
+    //     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 
-        if (req.method == 'OPTIONS') {
-            res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-            return res.status(200).json({});
-        }
+    //     if (req.method == 'OPTIONS') {
+    //         res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
+    //         return res.status(200).json({});
+    //     }
 
-        next();
-    });
+    //     next();
+    // });
 
     /** Routes */
     router.use('/authors', authorRoutes);
