@@ -1,8 +1,8 @@
 import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Response, Request } from 'express';
 import Logging from '../library/Logging';
-import { IAuthor } from '../models/Author';
-import { IBook } from '../models/Book';
+import { IUser } from '../models/User';
+import { IEvent } from '../models/Events';
 
 export const ValidateSchema = (schema: ObjectSchema) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -18,28 +18,42 @@ export const ValidateSchema = (schema: ObjectSchema) => {
 };
 
 export const Schemas = {
-    author: {
-        create: Joi.object<IAuthor>({
-            name: Joi.string().required()
+    user: {
+        create: Joi.object<IUser>({
+            userName: Joi.string().required(),
+            email: Joi.string().required(),
+            idUser: Joi.number().required(),
+            age: Joi.number().required(),
+            password: Joi.string().required()
         }),
-        update: Joi.object<IAuthor>({
-            name: Joi.string().required()
+        update: Joi.object<IUser>({
+            userName: Joi.string().required(),
+            email: Joi.string().required(),
+            idUser: Joi.number().required(),
+            age: Joi.number().required(),
+            password: Joi.string().required()
+
         })
     },
-    book: {
-        create: Joi.object<IBook>({
-            author: Joi.string()
+    event: {
+        create: Joi.object<IEvent>({
+            user: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
-            title: Joi.string().required(),
-            category: Joi.string().required()
+            place: Joi.string().required(),
+            category: Joi.string().required(),
+            eventName: Joi.string().required(),
+            date: Joi.string().required()
+
         }),
-        update: Joi.object<IBook>({
-            author: Joi.string()
+        update: Joi.object<IEvent>({
+            user: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
-            title: Joi.string().required(),
-            category: Joi.string().required()
+           place: Joi.string().required(),
+            category: Joi.string().required(),
+            eventName: Joi.string().required(),
+            date: Joi.string().required()
         })
     }
 };
