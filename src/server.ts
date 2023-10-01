@@ -3,8 +3,8 @@ import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
-import authorRoutes from './routes/User';
-import bookRoutes from './routes/Events';
+import userRoutes from './routes/User';
+import eventRoutes from './routes/Events';
 import cors from 'cors';
 
 const router = express();
@@ -56,7 +56,7 @@ const StartServer = () => {
     // });
 
     /** Routes */
-    router.use('/authors', userRoutes);
+    router.use('/users', userRoutes);
     router.use('/events', eventRoutes);
 
     /** Healthcheck */

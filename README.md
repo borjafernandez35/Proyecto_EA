@@ -1,9 +1,9 @@
-# Propuesta Seminario 5 MongoDB, Node.js, Typescript
+# Proyecto EA
 
-Versión de prueba realizada a partir de este vídeo (Min 0:00 - 33:11 y 41:48 - final, despúes replicar Author.ts para Book.ts):
+Este es el principio de nuestro proyecto de EA, formado por:
 
--   [Propuesta](https://www.youtube.com/watch?v=72_5_YuDCNA&t=264s&ab_channel=TheNerdyCanuck)
+[Sara Aguiló](https://github.com/saraaguilo) 
+[Carla Victorio](https://github.com/CarlaVictorio) 
+[David Valero](https://github.com/David-valero-blz)
+[Borja Fernández](https://github.com/borjafernandez35)
 
-[Borja Fernandez](https://github.com/borjafernandez35) 
-[Ádam Gallardo](https://github.com/adamgallardo) 
-[Jose Mª Larrinzal](https://github.com/Jlarrinzal)
