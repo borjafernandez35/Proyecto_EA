@@ -1,15 +1,10 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-export interface IUser {
+export interface IComment {
     userName: string;
-    email: string;
-    //idUser: number;
-    birthDate: Date;
-    password: string;
     avatar: string;
-    createdEvents: [Event];
-    joinedEvents: [Event];
-    //preferences: [Category];
+    text: [string];
+    punctuation: number; //valorar de 1 a 5, estrellitas.
 }
 
 export interface IUserModel extends IUser, Document {}

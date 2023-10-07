@@ -1,15 +1,7 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IUser {
-    userName: string;
-    email: string;
-    //idUser: number;
-    birthDate: Date;
-    password: string;
-    avatar: string;
-    createdEvents: [Event];
-    joinedEvents: [Event];
-    //preferences: [Category];
+    //photo group, name, array users, messages, idEvento
 }
 
 export interface IUserModel extends IUser, Document {}

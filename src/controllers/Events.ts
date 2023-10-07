@@ -36,18 +36,6 @@ const readAll = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-const readAllA = (req: Request, res: Response, next: NextFunction) => {
-    let query = {}; // category: 'action' };
-    let projection = {
-        _id: 1,
-        category: 1
-    };
-    return Event.find(query, projection)
-        .populate('user')
-        .then((events) => res.status(200).json({ events }))
-        .catch((error) => res.status(500).json({ error }));
-};
-
 const updateEvent = (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.eventId;
 
@@ -75,4 +63,4 @@ const deleteEvent = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-export default { createEvent, readEvent, readAll, readAllA, updateEvent, deleteEvent };
+export default { createEvent, readEvent, readAll, updateEvent, deleteEvent };
