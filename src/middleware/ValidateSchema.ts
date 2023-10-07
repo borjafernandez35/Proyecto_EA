@@ -2,7 +2,7 @@ import Joi, { ObjectSchema } from 'joi';
 import { NextFunction, Response, Request } from 'express';
 import Logging from '../library/Logging';
 import { IUser } from '../models/User';
-import { IEvent } from '../models/Events';
+import { IEvent } from '../models/Event';
 
 export const ValidateSchema = (schema: ObjectSchema) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -32,7 +32,6 @@ export const Schemas = {
             idUser: Joi.number().required(),
             age: Joi.number().required(),
             password: Joi.string().required()
-
         })
     },
     event: {
@@ -44,13 +43,12 @@ export const Schemas = {
             category: Joi.string().required(),
             eventName: Joi.string().required(),
             date: Joi.string().required()
-
         }),
         update: Joi.object<IEvent>({
             user: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
-           place: Joi.string().required(),
+            place: Joi.string().required(),
             category: Joi.string().required(),
             eventName: Joi.string().required(),
             date: Joi.string().required()

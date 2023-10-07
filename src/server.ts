@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 import { config } from './config/config';
 import Logging from './library/Logging';
 import userRoutes from './routes/User';
-import eventRoutes from './routes/Events';
+import eventRoutes from './routes/Event';
 import cors from 'cors';
 
 const router = express();

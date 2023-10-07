@@ -1,26 +1,18 @@
 import mongoose, { Document, Schema } from 'mongoose';
 
-export interface IUser {
-    userName: string;
-    email: string;
-    //idUser: number;
-    birthDate: Date;
-    password: string;
-    avatar: string;
-    createdEvents: [Event];
-    joinedEvents: [Event];
-    //preferences: [Category];
+export interface ICategory {
+    categoryName: string;
+    idEvents: string[];
+    idUsers: string[];
 }
 
-export interface IUserModel extends IUser, Document {}
+export interface ICategoryModel extends ICategory, Document {}
 
-const UserSchema: Schema = new Schema(
+const CategorySchema: Schema = new Schema(
     {
-        userName: { type: String, required: true },
-        email: { type: String, required: true },
-        idUser: { type: Number, required: true },
-        age: { type: Number, required: true },
-        password: { type: String, required: true }
+        categoryName: { type: String, required: true },
+        idEvents: { type: Schema.Types.ObjectId, required: true },
+        idUsers: { type: Schema.Types.ObjectId, required: true }
     },
     {
         versionKey: false,
@@ -28,4 +20,4 @@ const UserSchema: Schema = new Schema(
     }
 );
 
-export default mongoose.model<IUserModel>('User', UserSchema);
+export default mongoose.model<ICategoryModel>('Category', CategorySchema);
