@@ -1,18 +1,24 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import User from './User';
+import Message from './Message';
 
-export interface IUser {
-    //photo group, name, array users, messages, idEvento
+export interface IChat {
+    photo: string;
+    groupName: string;
+    idParticipants: string[];
+    idMessages: string[];
+    idEvent: string;
 }
 
-export interface IUserModel extends IUser, Document {}
+export interface IChatModel extends IChat, Document {}
 
-const UserSchema: Schema = new Schema(
+const ChatSchema: Schema = new Schema(
     {
-        userName: { type: String, required: true },
-        email: { type: String, required: true },
-        idUser: { type: Number, required: true },
-        age: { type: Number, required: true },
-        password: { type: String, required: true }
+        photo: { type: String, required: true },
+        groupName: { type: String, required: true },
+        idParticipants: [{ type: Schema.Types.ObjectId, required: true, ref: 'User' }],
+        idMessages: [{ type: Schema.Types.ObjectId, required: true, ref: 'Message' }],
+        idEvent: { type: Schema.Types.ObjectId, required: true, ref: 'Event' }
     },
     {
         versionKey: false,
@@ -20,4 +26,4 @@ const UserSchema: Schema = new Schema(
     }
 );
 
-export default mongoose.model<IUserModel>('User', UserSchema);
+export default mongoose.model<IChatModel>('Chat', ChatSchema);
