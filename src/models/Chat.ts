@@ -1,6 +1,4 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import User from './User';
-import Message from './Message';
 
 export interface IChat {
     photo: string;

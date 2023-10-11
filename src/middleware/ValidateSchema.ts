@@ -3,6 +3,10 @@ import { NextFunction, Response, Request } from 'express';
 import Logging from '../library/Logging';
 import { IUser } from '../models/User';
 import { IEvent } from '../models/Event';
+import { IMessage } from '../models/Message';
+import { IChat } from '../models/Chat';
+import { IComment } from '../models/Comment';
+import { ICategory } from '../models/Category';
 
 export const ValidateSchema = (schema: ObjectSchema) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -22,36 +26,132 @@ export const Schemas = {
         create: Joi.object<IUser>({
             userName: Joi.string().required(),
             email: Joi.string().required(),
-            idUser: Joi.number().required(),
-            age: Joi.number().required(),
-            password: Joi.string().required()
+            birthDate: Joi.date().required(),
+            password: Joi.string().required(),
+            avatar: Joi.string().required(),
+            createdEventsId: Joi.array().items(Joi.string().required()),
+            joinedEventsId: Joi.array().items(Joi.string().required()),
+            idCategories: Joi.array().items(Joi.string().required())
         }),
         update: Joi.object<IUser>({
             userName: Joi.string().required(),
             email: Joi.string().required(),
-            idUser: Joi.number().required(),
-            age: Joi.number().required(),
-            password: Joi.string().required()
+            birthDate: Joi.date().required(),
+            password: Joi.string().required(),
+            avatar: Joi.string().required(),
+            createdEventsId: Joi.array().items(Joi.string().required()),
+            joinedEventsId: Joi.array().items(Joi.string().required()),
+            idCategories: Joi.array().items(Joi.string().required())
         })
     },
     event: {
         create: Joi.object<IEvent>({
-            user: Joi.string()
+            idUser: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
-            place: Joi.string().required(),
-            category: Joi.string().required(),
+            coordinates: Joi.array().items(Joi.number().required()), //limitar a dos
             eventName: Joi.string().required(),
-            date: Joi.string().required()
+            idCategory: Joi.array().items(Joi.string().required()),
+            date: Joi.date().required(),
+            description: Joi.string().required(),
+            assistants: Joi.array().items(Joi.string().required()),
+            link: Joi.string().required(),
+            photo: Joi.string().required(),
+            idChat: Joi.string().required(),
+            idComments: Joi.array().items(Joi.string().required())
         }),
         update: Joi.object<IEvent>({
-            user: Joi.string()
+            idUser: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
-            place: Joi.string().required(),
-            category: Joi.string().required(),
+            coordinates: Joi.array().items(Joi.number().required()), //limitar a dos
             eventName: Joi.string().required(),
-            date: Joi.string().required()
+            idCategory: Joi.array().items(Joi.string().required()),
+            date: Joi.date().required(),
+            description: Joi.string().required(),
+            assistants: Joi.array().items(Joi.string().required()),
+            link: Joi.string().required(),
+            photo: Joi.string().required(),
+            idChat: Joi.string().required(),
+            idComments: Joi.array().items(Joi.string().required())
+        })
+    },
+    message: {
+        create: Joi.object<IMessage>({
+            idUser: Joi.string()
+                .regex(/^[0-9a-fA-F]{24}/)
+                .required(),
+            text: Joi.string().required()
+        }),
+        update: Joi.object<IMessage>({
+            idUser: Joi.string()
+                .regex(/^[0-9a-fA-F]{24}/)
+                .required(),
+            text: Joi.string().required()
+        })
+    },
+    chat: {
+        create: Joi.object<IChat>({
+            photo: Joi.string().required(),
+            groupName: Joi.string().required(),
+            idParticipants: Joi.array().items(Joi.string().required()),
+            idMessages: Joi.array().items(Joi.string().required()),
+            idEvent: Joi.string()
+                .regex(/^[0-9a-fA-F]{24}/)
+                .required()
+        }),
+        update: Joi.object<IChat>({
+            photo: Joi.string().required(),
+            groupName: Joi.string().required(),
+            idParticipants: Joi.array().items(Joi.string().required()),
+            idMessages: Joi.array().items(Joi.string().required()),
+            idEvent: Joi.string()
+                .regex(/^[0-9a-fA-F]{24}/)
+                .required()
+        })
+    },
+    category: {
+        create: Joi.object<ICategory>({
+            idUsers: Joi.array().items(
+                Joi.string()
+                    .regex(/^[0-9a-fA-F]{24}/)
+                    .required()
+            ),
+            idEvents: Joi.array().items(
+                Joi.string()
+                    .regex(/^[0-9a-fA-F]{24}/)
+                    .required()
+            ),
+            categoryName: Joi.string().required()
+        }),
+        update: Joi.object<ICategory>({
+            idUsers: Joi.array().items(
+                Joi.string()
+                    .regex(/^[0-9a-fA-F]{24}/)
+                    .required()
+            ),
+            idEvents: Joi.array().items(
+                Joi.string()
+                    .regex(/^[0-9a-fA-F]{24}/)
+                    .required()
+            ),
+            categoryName: Joi.string().required()
+        })
+    },
+    comment: {
+        create: Joi.object<IComment>({
+            userId: Joi.string()
+                .regex(/^[0-9a-fA-F]{24}/)
+                .required(),
+            text: Joi.string().required(),
+            punctuation: Joi.number().required()
+        }),
+        update: Joi.object<IComment>({
+            userId: Joi.string()
+                .regex(/^[0-9a-fA-F]{24}/)
+                .required(),
+            text: Joi.string().required(),
+            punctuation: Joi.number().required()
         })
     }
 };

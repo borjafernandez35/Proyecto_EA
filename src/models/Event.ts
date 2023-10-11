@@ -1,7 +1,4 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import Category from './Category';
-import User from './User';
-import Comment from './Comment';
 
 export interface IEvent {
     coordinates: [number, number];

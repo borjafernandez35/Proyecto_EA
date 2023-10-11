@@ -1,5 +1,4 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import User from './User';
 
 export interface IMessage {
     text: string;

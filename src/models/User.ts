@@ -1,5 +1,4 @@
 import mongoose, { Document, Schema } from 'mongoose';
-import Category from './Category';
 
 export interface IUser {
     userName: string;
@@ -8,8 +7,8 @@ export interface IUser {
     birthDate: Date;
     password: string;
     avatar: string;
-    createdEventsId: string;
-    joinedEventsId: string;
+    createdEventsId: string[];
+    joinedEventsId: string[];
     idCategories: string[];
 }
 
@@ -23,8 +22,8 @@ const UserSchema: Schema = new Schema(
         birthDate: { type: Date, required: true },
         password: { type: String, required: true },
         avatar: { type: String, required: true },
-        createdEventsId: { type: Schema.Types.ObjectId, required: true, ref: 'Event' },
-        joinedEventsId: { type: Schema.Types.ObjectId, required: true, ref: 'Event' },
+        createdEventsId: [{ type: Schema.Types.ObjectId, required: true, ref: 'Event' }],
+        joinedEventsId: [{ type: Schema.Types.ObjectId, required: true, ref: 'Event' }],
         idCategories: [{ type: Schema.Types.ObjectId, required: true, ref: 'Category' }]
     },
     {

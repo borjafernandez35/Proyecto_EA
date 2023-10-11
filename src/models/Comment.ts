@@ -2,7 +2,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 
 export interface IComment {
     userId: string;
-    //avatar: string;
+
     text: string;
     punctuation: number; //valorar de 1 a 5, estrellitas.
 }
