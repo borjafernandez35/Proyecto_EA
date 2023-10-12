@@ -14,7 +14,7 @@ const CommentSchema: Schema = new Schema(
         userId: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
         //avatar: { type: String, required: true },
         text: { type: String, required: true },
-        punctuation: { type: Number, required: true }
+        punctuation: { type: Number, required: false }
     },
     {
         versionKey: false,

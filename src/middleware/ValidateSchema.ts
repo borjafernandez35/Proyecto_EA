@@ -26,7 +26,7 @@ export const Schemas = {
         create: Joi.object<IUser>({
             userName: Joi.string().required(),
             email: Joi.string().required(),
-            birthDate: Joi.date().required(),
+            birthDate: Joi.date().iso().required(),
             password: Joi.string().required(),
             avatar: Joi.string().optional(),
             createdEventsId: Joi.array().items(Joi.string().optional()),
@@ -36,7 +36,7 @@ export const Schemas = {
         update: Joi.object<IUser>({
             userName: Joi.string().required(),
             email: Joi.string().required(),
-            birthDate: Joi.date().required(),
+            birthDate: Joi.date().iso().required(),
             password: Joi.string().required(),
             avatar: Joi.string().optional(),
             createdEventsId: Joi.array().items(Joi.string().optional()),
@@ -54,10 +54,10 @@ export const Schemas = {
             idCategory: Joi.array().items(Joi.string().required()),
             date: Joi.date().required(),
             description: Joi.string().required(),
-            assistants: Joi.array().items(Joi.string().required()),
+            assistants: Joi.array().items(Joi.string().optional()),
             link: Joi.string().optional(),
             photo: Joi.string().required(),
-            idChat: Joi.string().required(),
+            idChat: Joi.string().optional(),
             idComments: Joi.array().items(Joi.string().optional())
         }),
         update: Joi.object<IEvent>({
@@ -69,10 +69,10 @@ export const Schemas = {
             idCategory: Joi.array().items(Joi.string().required()),
             date: Joi.date().required(),
             description: Joi.string().required(),
-            assistants: Joi.array().items(Joi.string().required()),
+            assistants: Joi.array().items(Joi.string().optional()),
             link: Joi.string().optional(),
             photo: Joi.string().required(),
-            idChat: Joi.string().required(),
+            idChat: Joi.string().optional(),
             idComments: Joi.array().items(Joi.string().optional())
         })
     },

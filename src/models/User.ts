@@ -21,10 +21,10 @@ const UserSchema: Schema = new Schema(
         //idUser: { type: Number, required: true },
         birthDate: { type: Date, required: true },
         password: { type: String, required: true },
-        avatar: { type: String, required: true },
-        createdEventsId: [{ type: Schema.Types.ObjectId, required: true, ref: 'Event' }],
-        joinedEventsId: [{ type: Schema.Types.ObjectId, required: true, ref: 'Event' }],
-        idCategories: [{ type: Schema.Types.ObjectId, required: true, ref: 'Category' }]
+        avatar: { type: String, required: false },
+        createdEventsId: [{ type: Schema.Types.ObjectId, required: false, ref: 'Event' }],
+        joinedEventsId: [{ type: Schema.Types.ObjectId, required: false, ref: 'Event' }],
+        idCategories: [{ type: Schema.Types.ObjectId, required: false, ref: 'Category' }]
     },
     {
         versionKey: false,

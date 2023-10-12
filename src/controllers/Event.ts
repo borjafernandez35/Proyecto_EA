@@ -3,20 +3,26 @@ import mongoose from 'mongoose';
 import Event from '../models/Event';
 
 const createEvent = (req: Request, res: Response, next: NextFunction) => {
-    const { eventName, place, category, date, user } = req.body;
+    const { coordinates, eventName, idCategory, date, idUser, description, assistants, link, photo, idChat, idComments } = req.body;
 
     const event = new Event({
         _id: new mongoose.Types.ObjectId(),
         eventName,
-        place,
-        category,
+        coordinates,
+        idCategory,
         date,
-        user
+        idUser,
+        description,
+        assistants,
+        link,
+        photo,
+        idChat,
+        idComments
     });
 
     return event
         .save()
-        .then((event) => res.status(201).json( event ))
+        .then((event) => res.status(201).json(event))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -25,15 +31,17 @@ const readEvent = (req: Request, res: Response, next: NextFunction) => {
 
     return Event.findById(eventId)
         .populate('user')
-        .then((event) => (event ? res.status(200).json( event ) : res.status(404).json({ message: 'not found' })))
+        .then((event) => (event ? res.status(200).json(event) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
-    return Event.find()
-        .populate('user')
-        .then((events) => res.status(200).json( events ))
-        .catch((error) => res.status(500).json({ error }));
+    return (
+        Event.find()
+            //populate de user ben fet
+            .then((events) => res.status(200).json(events))
+            .catch((error) => res.status(500).json({ error }))
+    );
 };
 
 const updateEvent = (req: Request, res: Response, next: NextFunction) => {
@@ -46,7 +54,7 @@ const updateEvent = (req: Request, res: Response, next: NextFunction) => {
 
                 return event
                     .save()
-                    .then((event) => res.status(201).json( event ))
+                    .then((event) => res.status(201).json(event))
                     .catch((error) => res.status(500).json({ error }));
             } else {
                 return res.status(404).json({ message: 'not found' });

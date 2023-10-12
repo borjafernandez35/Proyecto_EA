@@ -11,8 +11,8 @@ export interface ICategoryModel extends ICategory, Document {}
 const CategorySchema: Schema = new Schema(
     {
         categoryName: { type: String, required: true },
-        idEvents: { type: Schema.Types.ObjectId, required: true },
-        idUsers: { type: Schema.Types.ObjectId, required: true }
+        idEvents: { type: Schema.Types.ObjectId, required: false },
+        idUsers: { type: Schema.Types.ObjectId, required: false }
     },
     {
         versionKey: false,

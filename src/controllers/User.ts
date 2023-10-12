@@ -3,20 +3,23 @@ import mongoose from 'mongoose';
 import User from '../models/User';
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-    const { userName, email, idUser, age, password } = req.body;
+    const { userName, email, birthDate, password, avatar, createdEventsId, joinedEventsId, idCategories } = req.body;
 
     const user = new User({
         _id: new mongoose.Types.ObjectId(),
         userName,
         email,
-        idUser,
-        age,
-        password
+        birthDate,
+        password,
+        avatar,
+        createdEventsId,
+        joinedEventsId,
+        idCategories
     });
 
     return user
         .save()
-        .then((user) => res.status(201).json( user ))
+        .then((user) => res.status(201).json(user))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -24,13 +27,13 @@ const readUser = (req: Request, res: Response, next: NextFunction) => {
     const authorId = req.params.authorId;
 
     return User.findById(authorId)
-        .then((user) => (user ? res.status(200).json( user ) : res.status(404).json({ message: 'not found' })))
+        .then((user) => (user ? res.status(200).json(user) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return User.find()
-        .then((users) => res.status(200).json( users ))
+        .then((users) => res.status(200).json(users))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -44,7 +47,7 @@ const updateUser = (req: Request, res: Response, next: NextFunction) => {
 
                 return user
                     .save()
-                    .then((user) => res.status(201).json( user ))
+                    .then((user) => res.status(201).json(user))
                     .catch((error) => res.status(500).json({ error }));
             } else {
                 return res.status(404).json({ message: 'not found' });

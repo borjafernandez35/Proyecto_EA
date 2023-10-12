@@ -5,6 +5,10 @@ import { config } from './config/config';
 import Logging from './library/Logging';
 import userRoutes from './routes/User';
 import eventRoutes from './routes/Event';
+import categoryRoutes from './routes/Category';
+import chatRoutes from './routes/Chat';
+import commentRoutes from './routes/Comment';
+import messageRoutes from './routes/Message';
 import cors from 'cors';
 
 const router = express();
@@ -58,6 +62,10 @@ const StartServer = () => {
     /** Routes */
     router.use('/users', userRoutes);
     router.use('/events', eventRoutes);
+    router.use('/categories', categoryRoutes);
+    router.use('/chats', chatRoutes);
+    router.use('/comments', commentRoutes);
+    router.use('/messages', messageRoutes);
 
     /** Healthcheck */
     router.get('/ping', (req, res, next) => res.status(200).json({ message: 'pong' }));

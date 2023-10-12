@@ -24,11 +24,11 @@ const EventSchema: Schema = new Schema(
         eventName: { type: String, required: true },
         idUser: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
         description: { type: String, required: true },
-        assistants: [{ type: Schema.Types.ObjectId, required: true, ref: 'User' }],
-        link: { type: String, required: true },
+        assistants: [{ type: Schema.Types.ObjectId, required: false, ref: 'User' }],
+        link: { type: String, required: false },
         photo: { type: String, required: true },
-        idChat: { type: Schema.Types.ObjectId, required: true, ref: 'Chat' },
-        idComments: [{ type: Schema.Types.ObjectId, required: true, ref: 'Comment' }]
+        idChat: { type: Schema.Types.ObjectId, required: false, ref: 'Chat' },
+        idComments: [{ type: Schema.Types.ObjectId, required: false, ref: 'Comment' }]
     },
     {
         timestamps: true,

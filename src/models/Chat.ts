@@ -12,10 +12,10 @@ export interface IChatModel extends IChat, Document {}
 
 const ChatSchema: Schema = new Schema(
     {
-        photo: { type: String, required: true },
+        photo: { type: String, required: false },
         groupName: { type: String, required: true },
         idParticipants: [{ type: Schema.Types.ObjectId, required: true, ref: 'User' }],
-        idMessages: [{ type: Schema.Types.ObjectId, required: true, ref: 'Message' }],
+        idMessages: [{ type: Schema.Types.ObjectId, required: false, ref: 'Message' }],
         idEvent: { type: Schema.Types.ObjectId, required: true, ref: 'Event' }
     },
     {
