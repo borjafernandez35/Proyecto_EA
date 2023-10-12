@@ -13,7 +13,7 @@ const createMessage = (req: Request, res: Response, next: NextFunction) => {
 
     return message
         .save()
-        .then((message) => res.status(201).json({ message }))
+        .then((message) => res.status(201).json( message ))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -22,14 +22,14 @@ const readMessage = (req: Request, res: Response, next: NextFunction) => {
 
     return Message.findById(messageId)
         .populate('user')
-        .then((message) => (message ? res.status(200).json({ message }) : res.status(404).json({ message: 'not found' })))
+        .then((message) => (message ? res.status(200).json( message ) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Message.find()
         .populate('user')
-        .then((messages) => res.status(200).json({ messages }))
+        .then((messages) => res.status(200).json( messages ))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -43,7 +43,7 @@ const updateMessage = (req: Request, res: Response, next: NextFunction) => {
 
                 return message
                     .save()
-                    .then((message) => res.status(201).json({ message }))
+                    .then((message) => res.status(201).json( message ))
                     .catch((error) => res.status(500).json({ error }));
             } else {
                 return res.status(404).json({ message: 'not found' });

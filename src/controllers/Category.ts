@@ -14,7 +14,7 @@ const createCategory = (req: Request, res: Response, next: NextFunction) => {
 
     return category
         .save()
-        .then((category) => res.status(201).json({ category }))
+        .then((category) => res.status(201).json( category ))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -23,14 +23,14 @@ const readCategory = (req: Request, res: Response, next: NextFunction) => {
 
     return Category.findById(categoryId)
         .populate('user', 'event')
-        .then((category) => (category ? res.status(200).json({ category }) : res.status(404).json({ message: 'not found' })))
+        .then((category) => (category ? res.status(200).json( category ) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Category.find()
         .populate('user', 'event')
-        .then((categories) => res.status(200).json({ categories }))
+        .then((categories) => res.status(200).json( categories ))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -44,7 +44,7 @@ const updateCategory = (req: Request, res: Response, next: NextFunction) => {
 
                 return category
                     .save()
-                    .then((category) => res.status(201).json({ category }))
+                    .then((category) => res.status(201).json( category ))
                     .catch((error) => res.status(500).json({ error }));
             } else {
                 return res.status(404).json({ message: 'not found' });

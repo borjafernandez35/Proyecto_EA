@@ -16,7 +16,7 @@ const createEvent = (req: Request, res: Response, next: NextFunction) => {
 
     return event
         .save()
-        .then((event) => res.status(201).json({ event }))
+        .then((event) => res.status(201).json( event ))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -25,14 +25,14 @@ const readEvent = (req: Request, res: Response, next: NextFunction) => {
 
     return Event.findById(eventId)
         .populate('user')
-        .then((event) => (event ? res.status(200).json({ event }) : res.status(404).json({ message: 'not found' })))
+        .then((event) => (event ? res.status(200).json( event ) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Event.find()
         .populate('user')
-        .then((events) => res.status(200).json({ events }))
+        .then((events) => res.status(200).json( events ))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -46,7 +46,7 @@ const updateEvent = (req: Request, res: Response, next: NextFunction) => {
 
                 return event
                     .save()
-                    .then((event) => res.status(201).json({ event }))
+                    .then((event) => res.status(201).json( event ))
                     .catch((error) => res.status(500).json({ error }));
             } else {
                 return res.status(404).json({ message: 'not found' });
