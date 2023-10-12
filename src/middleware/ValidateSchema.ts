@@ -28,20 +28,20 @@ export const Schemas = {
             email: Joi.string().required(),
             birthDate: Joi.date().required(),
             password: Joi.string().required(),
-            avatar: Joi.string().required(),
-            createdEventsId: Joi.array().items(Joi.string().required()),
-            joinedEventsId: Joi.array().items(Joi.string().required()),
-            idCategories: Joi.array().items(Joi.string().required())
+            avatar: Joi.string().optional(),
+            createdEventsId: Joi.array().items(Joi.string().optional()),
+            joinedEventsId: Joi.array().items(Joi.string().optional()),
+            idCategories: Joi.array().items(Joi.string().optional())
         }),
         update: Joi.object<IUser>({
             userName: Joi.string().required(),
             email: Joi.string().required(),
             birthDate: Joi.date().required(),
             password: Joi.string().required(),
-            avatar: Joi.string().required(),
-            createdEventsId: Joi.array().items(Joi.string().required()),
-            joinedEventsId: Joi.array().items(Joi.string().required()),
-            idCategories: Joi.array().items(Joi.string().required())
+            avatar: Joi.string().optional(),
+            createdEventsId: Joi.array().items(Joi.string().optional()),
+            joinedEventsId: Joi.array().items(Joi.string().optional()),
+            idCategories: Joi.array().items(Joi.string().optional())
         })
     },
     event: {
@@ -55,10 +55,10 @@ export const Schemas = {
             date: Joi.date().required(),
             description: Joi.string().required(),
             assistants: Joi.array().items(Joi.string().required()),
-            link: Joi.string().required(),
+            link: Joi.string().optional(),
             photo: Joi.string().required(),
             idChat: Joi.string().required(),
-            idComments: Joi.array().items(Joi.string().required())
+            idComments: Joi.array().items(Joi.string().optional())
         }),
         update: Joi.object<IEvent>({
             idUser: Joi.string()
@@ -70,10 +70,10 @@ export const Schemas = {
             date: Joi.date().required(),
             description: Joi.string().required(),
             assistants: Joi.array().items(Joi.string().required()),
-            link: Joi.string().required(),
+            link: Joi.string().optional(),
             photo: Joi.string().required(),
             idChat: Joi.string().required(),
-            idComments: Joi.array().items(Joi.string().required())
+            idComments: Joi.array().items(Joi.string().optional())
         })
     },
     message: {
@@ -92,19 +92,19 @@ export const Schemas = {
     },
     chat: {
         create: Joi.object<IChat>({
-            photo: Joi.string().required(),
+            photo: Joi.string().optional(),
             groupName: Joi.string().required(),
             idParticipants: Joi.array().items(Joi.string().required()),
-            idMessages: Joi.array().items(Joi.string().required()),
+            idMessages: Joi.array().items(Joi.string().optional()),
             idEvent: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required()
         }),
         update: Joi.object<IChat>({
-            photo: Joi.string().required(),
+            photo: Joi.string().optional(),
             groupName: Joi.string().required(),
             idParticipants: Joi.array().items(Joi.string().required()),
-            idMessages: Joi.array().items(Joi.string().required()),
+            idMessages: Joi.array().items(Joi.string().optional()),
             idEvent: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required()
@@ -115,12 +115,12 @@ export const Schemas = {
             idUsers: Joi.array().items(
                 Joi.string()
                     .regex(/^[0-9a-fA-F]{24}/)
-                    .required()
+                    .optional()
             ),
             idEvents: Joi.array().items(
                 Joi.string()
                     .regex(/^[0-9a-fA-F]{24}/)
-                    .required()
+                    .optional()
             ),
             categoryName: Joi.string().required()
         }),
@@ -128,12 +128,12 @@ export const Schemas = {
             idUsers: Joi.array().items(
                 Joi.string()
                     .regex(/^[0-9a-fA-F]{24}/)
-                    .required()
+                    .optional()
             ),
             idEvents: Joi.array().items(
                 Joi.string()
                     .regex(/^[0-9a-fA-F]{24}/)
-                    .required()
+                    .optional()
             ),
             categoryName: Joi.string().required()
         })
@@ -144,14 +144,14 @@ export const Schemas = {
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
             text: Joi.string().required(),
-            punctuation: Joi.number().required()
+            punctuation: Joi.number().optional()
         }),
         update: Joi.object<IComment>({
             userId: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
             text: Joi.string().required(),
-            punctuation: Joi.number().required()
+            punctuation: Joi.number().optional()
         })
     }
 };
