@@ -29,10 +29,12 @@ const createEvent = (req: Request, res: Response, next: NextFunction) => {
 const readEvent = (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.eventId;
 
-    return Event.findById(eventId)
-        .populate('user')
-        .then((event) => (event ? res.status(200).json(event) : res.status(404).json({ message: 'not found' })))
-        .catch((error) => res.status(500).json({ error }));
+    return (
+        Event.findById(eventId)
+            //.populate('user')
+            .then((event) => (event ? res.status(200).json(event) : res.status(404).json({ message: 'not found' })))
+            .catch((error) => res.status(500).json({ error }))
+    );
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
