@@ -14,7 +14,7 @@ const createComment = (req: Request, res: Response, next: NextFunction) => {
 
     return comment
         .save()
-        .then((comment) => res.status(201).json( comment ))
+        .then((comment) => res.status(201).json(comment))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -22,15 +22,15 @@ const readComment = (req: Request, res: Response, next: NextFunction) => {
     const commentId = req.params.commentId;
 
     return Comment.findById(commentId)
-        .populate('user')
-        .then((comment) => (comment ? res.status(200).json( comment ) : res.status(404).json({ message: 'not found' })))
+        .populate('userId')
+        .then((comment) => (comment ? res.status(200).json(comment) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Comment.find()
-        .populate('user')
-        .then((comments) => res.status(200).json( comments ))
+        .populate('userId')
+        .then((comments) => res.status(200).json(comments))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -44,7 +44,7 @@ const updateComment = (req: Request, res: Response, next: NextFunction) => {
 
                 return comment
                     .save()
-                    .then((comment) => res.status(201).json( comment ))
+                    .then((comment) => res.status(201).json(comment))
                     .catch((error) => res.status(500).json({ error }));
             } else {
                 return res.status(404).json({ message: 'not found' });

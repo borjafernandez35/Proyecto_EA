@@ -16,7 +16,7 @@ const createChat = (req: Request, res: Response, next: NextFunction) => {
 
     return chat
         .save()
-        .then((chat) => res.status(201).json( chat ))
+        .then((chat) => res.status(201).json(chat))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -24,15 +24,15 @@ const readChat = (req: Request, res: Response, next: NextFunction) => {
     const chatId = req.params.chatId;
 
     return Chat.findById(chatId)
-        .populate('user', 'message', 'event')
-        .then((chat) => (chat ? res.status(200).json( chat ) : res.status(404).json({ message: 'not found' })))
+        .populate('idParticipants', 'idMessages', 'idEvent')
+        .then((chat) => (chat ? res.status(200).json(chat) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Chat.find()
-        .populate('user', 'message', 'event')
-        .then((chats) => res.status(200).json( chats ))
+        .populate('idParticipants', 'idMessages', 'idEvent')
+        .then((chats) => res.status(200).json(chats))
         .catch((error) => res.status(500).json({ error }));
 };
 
@@ -46,7 +46,7 @@ const updateChat = (req: Request, res: Response, next: NextFunction) => {
 
                 return chat
                     .save()
-                    .then((chat) => res.status(201).json( chat ))
+                    .then((chat) => res.status(201).json(chat))
                     .catch((error) => res.status(500).json({ error }));
             } else {
                 return res.status(404).json({ message: 'not found' });

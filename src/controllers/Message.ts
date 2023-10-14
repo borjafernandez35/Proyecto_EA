@@ -21,14 +21,14 @@ const readMessage = (req: Request, res: Response, next: NextFunction) => {
     const messageId = req.params.messageId;
 
     return Message.findById(messageId)
-        .populate('user')
+        .populate('idUser')
         .then((message) => (message ? res.status(200).json(message) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Message.find()
-        .populate('user')
+        .populate('idUser')
         .then((messages) => res.status(200).json(messages))
         .catch((error) => res.status(500).json({ error }));
 };

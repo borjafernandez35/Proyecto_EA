@@ -29,21 +29,17 @@ const createEvent = (req: Request, res: Response, next: NextFunction) => {
 const readEvent = (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.eventId;
 
-    return (
-        Event.findById(eventId)
-            //.populate('user')
-            .then((event) => (event ? res.status(200).json(event) : res.status(404).json({ message: 'not found' })))
-            .catch((error) => res.status(500).json({ error }))
-    );
+    return Event.findById(eventId)
+        .populate('idUser', 'assistants') //, 'idComments', 'idChat'
+        .then((event) => (event ? res.status(200).json(event) : res.status(404).json({ message: 'not found' })))
+        .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
-    return (
-        Event.find()
-            //populate de user ben fet
-            .then((events) => res.status(200).json(events))
-            .catch((error) => res.status(500).json({ error }))
-    );
+    return Event.find()
+        .populate('idUser', 'assistants') //, 'idComments', 'idChat'
+        .then((events) => res.status(200).json(events))
+        .catch((error) => res.status(500).json({ error }));
 };
 
 const updateEvent = (req: Request, res: Response, next: NextFunction) => {
