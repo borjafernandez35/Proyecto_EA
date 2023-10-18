@@ -6,7 +6,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
     const { userName, email, birthDate, password, avatar, createdEventsId, joinedEventsId, idCategories } = req.body;
 
     const user = new User({
-        _id: new mongoose.Types.ObjectId(),
+       // _id: new mongoose.Types.ObjectId(),
+       
         userName,
         email,
         birthDate,
