@@ -1,11 +1,13 @@
 import mongoose, { Document, Schema } from 'mongoose';
+import { IUser } from './User';
+import { ICategory } from './Category';
 
 export interface IEvent {
     coordinates: [number, number];
     eventName: string;
-    idCategory: string[];
+    idCategory: ICategory;
     date: Date;
-    idUser: string;
+    idUser: IUser;
     description: string;
     assistants: string[];
     link: string; //not required
@@ -19,16 +21,16 @@ export interface IEventModel extends IEvent, Document {}
 const EventSchema: Schema = new Schema(
     {
         coordinates: { type: [Number], required: true },
-        category: [{ type: Schema.Types.ObjectId, required: true, ref: 'Category' }],
+        idCategory: [{ type: Schema.Types.ObjectId, required: true, ref: 'Category' }],
         date: { type: Date, required: true },
         eventName: { type: String, required: true },
         idUser: { type: Schema.Types.ObjectId, required: true, ref: 'User' },
         description: { type: String, required: true },
-        assistants: [{ type: Schema.Types.ObjectId, required: false, ref: 'User' }],
+        assistants: [{ type: String, required: false, ref: 'User' }],
         link: { type: String, required: false },
         photo: { type: String, required: true },
-        idChat: { type: Schema.Types.ObjectId, required: false, ref: 'Chat' },
-        idComments: [{ type: Schema.Types.ObjectId, required: false, ref: 'Comment' }]
+        idChat: { type: String, required: false, ref: 'Chat' },
+        idComments: [{ type: String, required: false, ref: 'Comment' }]
     },
     {
         timestamps: true,

@@ -30,22 +30,25 @@ const readEvent = (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.eventId;
 
     return Event.findById(eventId)
-        .populate('idUser', 'assistants') //, 'idComments', 'idChat'
+        .populate('assistants') //, 'idComments', 'idChat'
         .then((event) => (event ? res.status(200).json(event) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
 
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Event.find()
-        .populate('idUser', 'assistants') //, 'idComments', 'idChat'
-        .then((events) => res.status(200).json(events))
+        .populate('idUser')
+        .populate('assistants') //, 'idComments', 'idChat'
+        .then((events) => {
+            res.status(200).json(events);
+        })
         .catch((error) => res.status(500).json({ error }));
 };
-
+/*
 const updateEvent = (req: Request, res: Response, next: NextFunction) => {
     const eventId = req.params.eventId;
 
-    return Event.findById(eventId)
+    return Event.findByIdAndUpdate(eventId)
         .then((event) => {
             if (event) {
                 event.set(req.body);
@@ -59,6 +62,36 @@ const updateEvent = (req: Request, res: Response, next: NextFunction) => {
             }
         })
         .catch((error) => res.status(500).json({ error }));
+};
+*/
+const updateEvent = (req: Request, res: Response, next: NextFunction) => {
+    const eventId = req.params.eventId;
+
+    return Event.findByIdAndUpdate(eventId)
+        .then((event) => {
+            if (event) {
+                event.set(req.body);
+
+                return event
+                    .save()
+                    .then((savedEvent) => res.status(201).json(savedEvent))
+                    .catch((saveError) => {
+                        if (saveError.name === 'ValidationError') {
+                            // Handle validation errors
+                            return res.status(400).json({ message: saveError.message });
+                        } else {
+                            // Handle other save errors
+                            return res.status(500).json({ message: 'Internal Server Error' });
+                        }
+                    });
+            } else {
+                return res.status(404).json({ message: 'Not found' });
+            }
+        })
+        .catch((findByIdAndUpdateError) => {
+            // Handle errors that occur during findByIdAndUpdate
+            return res.status(500).json({ message: 'Internal Server Error' });
+        });
 };
 
 const deleteEvent = (req: Request, res: Response, next: NextFunction) => {
