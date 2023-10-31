@@ -3,7 +3,7 @@ import mongoose, { Document, Schema } from 'mongoose';
 export interface IUser {
     userName: string;
     email: string;
-    //idUser: Object._id;
+    idUser: Number;
     birthDate: Date;
     password: string;
     avatar: string;
@@ -18,7 +18,7 @@ const UserSchema: Schema = new Schema(
     {
         userName: { type: String, required: true },
         email: { type: String, required: true },
-        //idUser: { type: Number, required: true },
+        idUser: { type: Number, required: true },
         birthDate: { type: Date, required: true },
         password: { type: String, required: true },
         avatar: { type: String, required: false },
