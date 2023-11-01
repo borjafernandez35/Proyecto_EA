@@ -21,7 +21,7 @@ export interface IEventModel extends IEvent, Document {}
 const EventSchema: Schema = new Schema(
     {
         coordinates: { type: [Number], required: true },
-        idCategory: [{ type: Schema.Types.ObjectId, required: true, ref: 'Category' }],
+        idCategory: [{ type: Schema.Types.ObjectId, required: false, ref: 'Category' }],
         date: { type: Date, required: true },
         eventName: { type: String, required: true },
         idUser: { type: Schema.Types.ObjectId, required: true, ref: 'User' },

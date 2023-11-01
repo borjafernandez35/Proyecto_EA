@@ -65,9 +65,13 @@ const updateEvent = (req: Request, res: Response, next: NextFunction) => {
 };
 */
 const updateEvent = (req: Request, res: Response, next: NextFunction) => {
-    const eventId = req.params.eventId;
+    const url = req.url;
+    console.log(url);
+    const urlSplitted: string[] = url.split('/');
+    const id = urlSplitted[1];
+    console.log(id);
 
-    return Event.findByIdAndUpdate(eventId)
+    return Event.findByIdAndUpdate(id)
         .then((event) => {
             if (event) {
                 event.set(req.body);

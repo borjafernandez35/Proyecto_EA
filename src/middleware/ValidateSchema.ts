@@ -51,7 +51,7 @@ export const Schemas = {
                 .required(),
             coordinates: Joi.array().items(Joi.number().required()), //limitar a dos
             eventName: Joi.string().required(),
-            idCategory: Joi.array().items(Joi.string().required()),
+            idCategory: Joi.array().items(Joi.string().optional()),
             date: Joi.date().required(),
             description: Joi.string().required(),
             assistants: Joi.array().items(Joi.string().optional()),
@@ -66,7 +66,7 @@ export const Schemas = {
                 .required(),
             coordinates: Joi.array().items(Joi.number().required()), //limitar a dos
             eventName: Joi.string().required(),
-            idCategory: Joi.array().items(Joi.string().required()),
+            idCategory: Joi.array().items(Joi.string().optional()),
             date: Joi.date().required(),
             description: Joi.string().required(),
             assistants: Joi.array().items(Joi.string().optional()),
