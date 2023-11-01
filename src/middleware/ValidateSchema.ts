@@ -26,7 +26,7 @@ export const Schemas = {
         create: Joi.object<IUser>({
             userName: Joi.string().required(),
             email: Joi.string().required(),
-            birthDate: Joi.date().iso().required(),
+            birthDate: Joi.date().iso().optional(),
             password: Joi.string().required(),
             avatar: Joi.string().optional(),
             createdEventsId: Joi.array().items(Joi.string().optional()),
@@ -36,7 +36,7 @@ export const Schemas = {
         update: Joi.object<IUser>({
             userName: Joi.string().required(),
             email: Joi.string().required(),
-            birthDate: Joi.date().iso().required(),
+            birthDate: Joi.date().iso().optional(),
             password: Joi.string().required(),
             avatar: Joi.string().optional(),
             createdEventsId: Joi.array().items(Joi.string().optional()),
@@ -56,7 +56,7 @@ export const Schemas = {
             description: Joi.string().required(),
             assistants: Joi.array().items(Joi.string().optional()),
             link: Joi.string().optional(),
-            photo: Joi.string().required(),
+            photo: Joi.string().optional(),
             idChat: Joi.string().optional(),
             idComments: Joi.array().items(Joi.string().optional())
         }),
