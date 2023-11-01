@@ -48,7 +48,7 @@ export const Schemas = {
         create: Joi.object<IEvent>({
             idUser: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
-                .required(),
+                .optional(),
             coordinates: Joi.array().items(Joi.number().required()), //limitar a dos
             eventName: Joi.string().required(),
             idCategory: Joi.array().items(Joi.string().optional()),
@@ -63,7 +63,7 @@ export const Schemas = {
         update: Joi.object<IEvent>({
             idUser: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
-                .required(),
+                .optional(),
             coordinates: Joi.array().items(Joi.number().required()), //limitar a dos
             eventName: Joi.string().required(),
             idCategory: Joi.array().items(Joi.string().optional()),
@@ -71,7 +71,7 @@ export const Schemas = {
             description: Joi.string().required(),
             assistants: Joi.array().items(Joi.string().optional()),
             link: Joi.string().optional(),
-            photo: Joi.string().required(),
+            photo: Joi.string().optional(),
             idChat: Joi.string().optional(),
             idComments: Joi.array().items(Joi.string().optional())
         })
