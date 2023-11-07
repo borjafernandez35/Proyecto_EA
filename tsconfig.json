@@ -71,5 +71,13 @@
     /* Advanced Options */
     "skipLibCheck": true,                           /* Skip type checking of declaration files. */
     "forceConsistentCasingInFileNames": true        /* Disallow inconsistently-cased references to the same file. */
+<<<<<<< Updated upstream
   }
 }
+=======
+  },
+  "include": ["src/**/*"]
+}
+
+//"target": "es2016",
+>>>>>>> Stashed changes
