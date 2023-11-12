@@ -16,5 +16,6 @@ export const config = {
     },
     server: {
         port: SERVER_PORT
-    }
+    },
+    secret: 'api+jwt'
 };

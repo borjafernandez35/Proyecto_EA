@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import User from '../models/User';
 
+
+
 const createUser = (req: Request, res: Response, next: NextFunction) => {
     const { userName, email, birthDate, password, avatar, createdEventsId, joinedEventsId, idCategories } = req.body;
 
@@ -70,5 +72,6 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
         .then((user) => (user ? res.status(201).json({ user, message: 'Deleted' }) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
+
 
 export default { createUser, readUser, readAll, updateUser, deleteUser };
