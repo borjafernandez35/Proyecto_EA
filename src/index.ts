@@ -1,4 +1,6 @@
 import app from './app';
+//const app = require("./app"); ??
+
 import { startServer } from './server';
 
 export async function main() {

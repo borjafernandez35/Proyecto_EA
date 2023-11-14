@@ -10,6 +10,8 @@ router.use((req, res, next) => {
 
 router.post('/signin', authCtrl.signin);
 router.post('/signup', authCtrl.signup);
+router.post('/me', authCtrl.me);
+
 router.get('/private', [verifyToken], authCtrl.priv);
 router.get('/public', [verifyToken], authCtrl.publ);
 

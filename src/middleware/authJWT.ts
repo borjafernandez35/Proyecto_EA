@@ -16,7 +16,6 @@ export async function verifyToken(req: AuthenticatedRequest, res: Response, next
     if (!token) {
         return res.status(403).json({ message: 'No token provided' });
     }
-
     try {
         const decoded = jwt.verify(token, _SECRET) as IJwtPayload;
         console.log('verifyToken');

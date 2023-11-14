@@ -11,7 +11,7 @@ export interface IUser {
     createdEventsId: string[];
     joinedEventsId: string[];
     idCategories: string[];
-    rol: string;
+    role: string;
     encryptPassword(password: string): Promise<string>;
     validatePassword(password: string): Promise<boolean>;
 }
@@ -28,8 +28,8 @@ const UserSchema: Schema = new Schema(
         avatar: { type: String, required: false },
         createdEventsId: [{ type: Schema.Types.ObjectId, required: false, ref: 'Event' }],
         joinedEventsId: [{ type: Schema.Types.ObjectId, required: false, ref: 'Event' }],
-        idCategories: [{ type: Schema.Types.ObjectId, required: false, ref: 'Category' }]
-        //rol: { type: String, required: true }
+        idCategories: [{ type: Schema.Types.ObjectId, required: false, ref: 'Category' }],
+        role: { type: String, required: false }
     },
     {
         versionKey: false,

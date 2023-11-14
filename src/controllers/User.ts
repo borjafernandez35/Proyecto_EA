@@ -2,14 +2,12 @@ import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import User from '../models/User';
 
-
-
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-    const { userName, email, birthDate, password, avatar, createdEventsId, joinedEventsId, idCategories } = req.body;
+    const { userName, email, birthDate, password, avatar, createdEventsId, joinedEventsId, idCategories, role } = req.body;
 
     const user = new User({
-       // _id: new mongoose.Types.ObjectId(),
-       
+        // _id: new mongoose.Types.ObjectId(),
+
         userName,
         email,
         birthDate,
@@ -17,7 +15,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
         avatar,
         createdEventsId,
         joinedEventsId,
-        idCategories
+        idCategories,
+        role
     });
 
     return user
@@ -72,6 +71,5 @@ const deleteUser = (req: Request, res: Response, next: NextFunction) => {
         .then((user) => (user ? res.status(201).json({ user, message: 'Deleted' }) : res.status(404).json({ message: 'not found' })))
         .catch((error) => res.status(500).json({ error }));
 };
-
 
 export default { createUser, readUser, readAll, updateUser, deleteUser };
