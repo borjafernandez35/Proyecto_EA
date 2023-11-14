@@ -35,7 +35,7 @@ export async function signin(req: Request, res: Response): Promise<Response> {
         expiresIn: 60 * 60 * 24
     });
 
-    return res.json({ auth: true, token });
+    return res.status(200).json({ auth: true, token });
 }
 
 export async function signup(req: Request, res: Response): Promise<Response> {
