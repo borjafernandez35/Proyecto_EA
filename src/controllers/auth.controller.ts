@@ -52,21 +52,32 @@ export async function signup(req: Request, res: Response): Promise<Response> {
 
     user.role = 'public';
 
-    user.password = await user.encryptPassword(user.password);
-    await user.save();
+    try {
+        const existeEmail = await User.findOne({ email });
+        if (existeEmail) {
+            return res.status(404).send('User is already created'); //si no enviamos el token no recibimos info
+        } else {
+            user.password = await user.encryptPassword(user.password);
 
-    // Ahora, después de registrarse, generamos un token y lo devolvemos
-    /*
+            await user.save();
+
+            // Ahora, después de registrarse, generamos un token y lo devolvemos
+            /*
     const token = jwt.sign({ id: user._id, rol: user.rol }, config.secret, {
         expiresIn: 60 * 60 * 24
     });
     */
-    //Creamos el token
-    const token = jwt.sign({ id: user._id }, config.secret, {
-        expiresIn: 60 * 60 * 24
-    });
+            //Creamos el token
+            const token = jwt.sign({ id: user._id }, config.secret, {
+                expiresIn: 60 * 60 * 24
+            });
 
-    return res.status(200).json({ auth: true, token });
+            return res.status(200).json({ auth: true, token });
+        }
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Error interno del servidor' });
+    }
 }
 
 export async function priv(req: AuthenticatedRequest, res: Response): Promise<Response> {
