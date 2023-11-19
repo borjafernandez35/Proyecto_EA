@@ -44,4 +44,6 @@ UserSchema.methods.validatePassword = async function (password: string) {
     return bcrypt.compare(password, this.password);
 };
 
+UserSchema.methods.validateEmail = async function (email: string) {};
+
 export default mongoose.model<IUserModel>('User', UserSchema);

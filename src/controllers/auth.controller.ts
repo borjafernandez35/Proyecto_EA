@@ -54,8 +54,12 @@ export async function signup(req: Request, res: Response): Promise<Response> {
 
     try {
         const existeEmail = await User.findOne({ email });
+        const existeUserName = await User.findOne({ userName });
+
         if (existeEmail) {
-            return res.status(404).send('User is already created'); //si no enviamos el token no recibimos info
+            return res.status(404).send('This email is already used');
+        } else if (existeUserName) {
+            return res.status(405).send('This user name is already used');
         } else {
             user.password = await user.encryptPassword(user.password);
 
