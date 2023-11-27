@@ -11,6 +11,7 @@ import commentRoutes from './routes/Comment';
 import messageRoutes from './routes/Message';
 import cors from 'cors';
 import authRoutes from './routes/auth'; // Importa las rutas de autenticación
+import { Server } from 'socket.io';
 
 // Inicializaciones
 const app: express.Application = express();
@@ -68,4 +69,27 @@ export const startServer = () => {
     });
 
     http.createServer(app).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+
+    // http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+    /*
+    const server = http.createServer(app);
+    const io = new Server(server);
+
+    io.on('connection', (socket) => {
+        Logging.info('A user connected');
+
+        socket.on('chat message', (msg) => {
+            Logging.info(`Message: ${msg}`);
+            io.emit('chat message', msg);
+        });
+
+        socket.on('disconnect', () => {
+            Logging.info('User disconnected');
+        });
+    });
+
+    server.listen(config.server.port, () => {
+        Logging.info(`Server is running on port ${config.server.port}`);
+    });
+    */
 };

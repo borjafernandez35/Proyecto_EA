@@ -13,6 +13,7 @@
     "@types/bcrypt": "^5.0.0",
     "@types/config": "^3.3.1",
     "@types/jsonwebtoken": "^9.0.3",
+    "@types/socket.io": "^3.0.2",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "chalk": "^4.1.2",
@@ -21,7 +22,8 @@
     "express": "^4.18.2",
     "joi": "^17.11.0",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^7.6.2"
+    "mongoose": "^7.6.2",
+    "socket.io": "^4.7.2"
   },
   "devDependencies": {
     "@types/cors": "^2.8.14",
