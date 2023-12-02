@@ -12,7 +12,7 @@ COPY . .
 RUN npm install
 
 # Copia el código fuente de tu proyecto al contenedor
-COPY . .
+#COPY . .
 
 # Compila TypeScript a JavaScript
 RUN tsc
