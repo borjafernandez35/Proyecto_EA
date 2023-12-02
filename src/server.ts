@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { RequestHandler } from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
@@ -10,68 +10,56 @@ import chatRoutes from './routes/Chat';
 import commentRoutes from './routes/Comment';
 import messageRoutes from './routes/Message';
 import cors from 'cors';
+import authRoutes from './routes/auth'; // Importa las rutas de autenticación
+import { Server } from 'socket.io';
 
-const router = express();
+// Inicializaciones
+const app: express.Application = express();
 
-/** Connect to Mongo */
+/** Conéctate a Mongo e inicia el servidor */
 mongoose
     .connect(config.mongo.url, { retryWrites: true, w: 'majority' })
     .then(() => {
-        //console.log('connected');  // Se puede hacer sin la libreria para el Logging, es solo más estético
-        Logging.info('connected to mongoDB');
-        StartServer(); // Función para inciar el server solo si se conecta mongoose
+        Logging.info('Connected to MongoDB');
+        startServer(); // Función para iniciar el servidor solo si se conecta mongoose
     })
     .catch((error) => {
-        //console.error(error);
-        Logging.error('Unable to connect: ');
+        Logging.error('Unable to connect to MongoDB');
         Logging.error(error);
     });
 
-/** Only Start Server if Mongoose Connects */
-const StartServer = () => {
-    /** Log the request */
-    router.use((req, res, next) => {
-        /** Log the req */
-        Logging.info(`Incomming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
+/** Inicia el servidor si se conecta Mongoose */
+export const startServer = () => {
+    // Registra la solicitud
+    app.use((req, res, next) => {
+        Logging.info(`Incoming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
         res.on('finish', () => {
-            /** Log the res */
             Logging.info(`Result - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}] - STATUS: [${res.statusCode}]`);
         });
 
         next();
     });
 
-    router.use(express.urlencoded({ extended: true }));
-    router.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
 
-    router.use(cors());
-    /** Rules of our API */
-    // router.use((req, res, next) => {
-    //     res.header('Access-Control-Allow-Origin', '*'); // * Quiere decir que la petición viene de cualquier origen
-    //     res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    app.use(cors());
 
-    //     if (req.method == 'OPTIONS') {
-    //         res.header('Access-Control-Allow-Methods', 'PUT, POST, PATCH, DELETE, GET');
-    //         return res.status(200).json({});
-    //     }
-
-    //     next();
-    // });
-
-    /** Routes */
-    router.use('/users', userRoutes);
-    router.use('/events', eventRoutes);
-    router.use('/categories', categoryRoutes);
-    router.use('/chats', chatRoutes);
-    router.use('/comments', commentRoutes);
-    router.use('/messages', messageRoutes);
+    /** Rutas */
+    app.use('/users', userRoutes);
+    app.use('/events', eventRoutes);
+    app.use('/categories', categoryRoutes);
+    app.use('/chats', chatRoutes);
+    app.use('/comments', commentRoutes);
+    app.use('/messages', messageRoutes);
+    app.use('/auth', authRoutes); // Usa las rutas de autenticación
 
     /** Healthcheck */
-    router.get('/ping', (req, res, next) => res.status(200).json({ message: 'pong' }));
+    app.get('/ping', (req, res, next) => res.status(200).json({ message: 'pong' }));
 
-    /** Error handling */
-    router.use((req, res, next) => {
+    /** Manejo de errores */
+    app.use((req, res, next) => {
         const error = new Error('Not found');
         Logging.error(error);
 
@@ -80,5 +68,28 @@ const StartServer = () => {
         });
     });
 
-    http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+    http.createServer(app).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+
+    // http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
+    /*
+    const server = http.createServer(app);
+    const io = new Server(server);
+
+    io.on('connection', (socket) => {
+        Logging.info('A user connected');
+
+        socket.on('chat message', (msg) => {
+            Logging.info(`Message: ${msg}`);
+            io.emit('chat message', msg);
+        });
+
+        socket.on('disconnect', () => {
+            Logging.info('User disconnected');
+        });
+    });
+
+    server.listen(config.server.port, () => {
+        Logging.info(`Server is running on port ${config.server.port}`);
+    });
+    */
 };
