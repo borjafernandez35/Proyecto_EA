@@ -65,26 +65,21 @@ const updateEvent = (req: Request, res: Response, next: NextFunction) => {
 };
 */
 const updateEvent = (req: Request, res: Response, next: NextFunction) => {
-    const url = req.url;
-    console.log(url);
-    const urlSplitted: string[] = url.split('/');
-    const id = urlSplitted[1];
-    console.log(id);
+    const eventId = req.params.eventId;
 
-    return Event.findByIdAndUpdate(id)
+    return Event.findById(eventId)
         .then((event) => {
             if (event) {
+                // Usar el método 'set' para actualizar el documento
                 event.set(req.body);
 
                 return event
                     .save()
-                    .then((savedEvent) => res.status(201).json(savedEvent))
+                    .then((savedEvent) => res.status(200).json(savedEvent))
                     .catch((saveError) => {
                         if (saveError.name === 'ValidationError') {
-                            // Handle validation errors
                             return res.status(400).json({ message: saveError.message });
                         } else {
-                            // Handle other save errors
                             return res.status(500).json({ message: 'Internal Server Error' });
                         }
                     });
@@ -92,8 +87,7 @@ const updateEvent = (req: Request, res: Response, next: NextFunction) => {
                 return res.status(404).json({ message: 'Not found' });
             }
         })
-        .catch((findByIdAndUpdateError) => {
-            // Handle errors that occur during findByIdAndUpdate
+        .catch((findByIdError) => {
             return res.status(500).json({ message: 'Internal Server Error' });
         });
 };

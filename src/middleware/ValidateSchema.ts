@@ -66,11 +66,11 @@ export const Schemas = {
             idUser: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .optional(),
-            coordinates: Joi.array().items(Joi.number().required()), //limitar a dos
-            eventName: Joi.string().required(),
+            coordinates: Joi.array().items(Joi.number().optional()), //limitar a dos
+            eventName: Joi.string().optional(),
             idCategory: Joi.array().items(Joi.string().optional()),
-            date: Joi.date().required(),
-            description: Joi.string().required(),
+            date: Joi.date().optional(),
+            description: Joi.string().optional(),
             assistants: Joi.array().items(Joi.string().optional()),
             link: Joi.string().optional(),
             photo: Joi.string().optional(),
@@ -146,6 +146,7 @@ export const Schemas = {
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
             text: Joi.string().required(),
+            date: Joi.date().required(),
             punctuation: Joi.number().optional()
         }),
         update: Joi.object<IComment>({
@@ -153,6 +154,7 @@ export const Schemas = {
                 .regex(/^[0-9a-fA-F]{24}/)
                 .required(),
             text: Joi.string().required(),
+            date: Joi.date().required(),
             punctuation: Joi.number().optional()
         })
     }
