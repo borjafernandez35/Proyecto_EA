@@ -32,7 +32,8 @@ export const Schemas = {
             createdEventsId: Joi.array().items(Joi.string().optional()),
             joinedEventsId: Joi.array().items(Joi.string().optional()),
             idCategories: Joi.array().items(Joi.string().optional()),
-            role: Joi.string().optional()
+            role: Joi.string().optional(),
+            description: Joi.string().optional()
         }),
         update: Joi.object<IUser>({
             userName: Joi.string().required(),
@@ -43,7 +44,8 @@ export const Schemas = {
             createdEventsId: Joi.array().items(Joi.string().optional()),
             joinedEventsId: Joi.array().items(Joi.string().optional()),
             idCategories: Joi.array().items(Joi.string().optional()),
-            role: Joi.string().optional()
+            role: Joi.string().optional(),
+            description: Joi.string().optional()
         })
     },
     event: {
