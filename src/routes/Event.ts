@@ -6,6 +6,7 @@ const router = express.Router();
 
 router.post('/', ValidateSchema(Schemas.event.create), controller.createEvent);
 router.get('/:eventId', controller.readEvent);
+router.get('/user/:idUser', controller.getEventsUser);
 router.get('/', controller.readAll);
 router.put('/:eventId', ValidateSchema(Schemas.event.update), controller.updateEvent);
 router.delete('/:eventId', controller.deleteEvent);
