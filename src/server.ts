@@ -68,10 +68,7 @@ export const startServer = () => {
         });
     });
 
-    http.createServer(app).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
-
     // http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
-    /*
     const server = http.createServer(app);
     const io = new Server(server);
 
@@ -91,5 +88,4 @@ export const startServer = () => {
     server.listen(config.server.port, () => {
         Logging.info(`Server is running on port ${config.server.port}`);
     });
-    */
 };
