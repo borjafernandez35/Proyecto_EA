@@ -72,16 +72,22 @@ export const startServer = () => {
     const server = http.createServer(app);
     const io = new Server(server);
 
+    const connectedUser = new Set();
     io.on('connection', (socket) => {
-        Logging.info('A user connected');
-
-        socket.on('chat message', (msg) => {
-            Logging.info(`Message: ${msg}`);
-            io.emit('chat message', msg);
+        console.log('Connected successfully', socket.id);
+        io.emit('connected-user', connectedUser.size);
+        connectedUser.add(socket.id);
+        socket.on('disconnect', () => {
+            console.log('Disconnected, socket.id');
+            connectedUser.delete(socket.id);
+            io.emit('connected-user', connectedUser.size);
         });
 
-        socket.on('disconnect', () => {
-            Logging.info('User disconnected');
+        socket.on('message', (msg) => {
+            Logging.info(`Message: ${msg}`);
+            io.emit('chat message', msg);
+            console.log(msg);
+            socket.broadcast.emit('message-receive', msg);
         });
     });
 
