@@ -13,8 +13,14 @@ WORKDIR /app
 # Copia los archivos de tu proyecto al contenedor
 COPY . .
 
-# Instala las dependencias
+
+
 RUN npm install
+
+# Copia el código fuente de tu proyecto al contenedor
+#COPY . .
+
+
 
 # Compila TypeScript a JavaScript
 RUN rm -rf build/ && tsc
