@@ -37,10 +37,8 @@ const readEvent = (req: Request, res: Response, next: NextFunction) => {
 
 const getEventsUser = (req: Request, res: Response, next: NextFunction) => {
     const url = req.url;
-    console.log(url);
     const urlSplitted: string[] = url.split('/');
     const idUser = urlSplitted[2];
-    console.log(idUser);
 
     return Event.find({ idUser: idUser })
         .then((events) => {
