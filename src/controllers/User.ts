@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import User from '../models/User';
 
 const createUser = (req: Request, res: Response, next: NextFunction) => {
-    const { userName, email, birthDate, password, avatar, createdEventsId, joinedEventsId, idCategories, role } = req.body;
+    const { userName, email, birthDate, password, avatar, createdEventsId, joinedEventsId, idCategories, role, description } = req.body;
 
     const user = new User({
         // _id: new mongoose.Types.ObjectId(),
@@ -16,7 +16,8 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
         createdEventsId,
         joinedEventsId,
         idCategories,
-        role
+        role,
+        description
     });
 
     return user
@@ -45,23 +46,27 @@ const readAll = (req: Request, res: Response, next: NextFunction) => {
     );
 };
 
-const updateUser = (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.params.userId;
+const updateUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const userId = req.params.userId;
 
-    return User.findById(userId)
-        .then((user) => {
-            if (user) {
+        const user = await User.findById(userId);
+
+        if (user) {
+            if (user.password === req.body.password) {
                 user.set(req.body);
-
-                return user
-                    .save()
-                    .then((user) => res.status(201).json(user))
-                    .catch((error) => res.status(500).json({ error }));
             } else {
-                return res.status(404).json({ message: 'not found' });
+                user.password = await user.encryptPassword(req.body.password);
             }
-        })
-        .catch((error) => res.status(500).json({ error }));
+
+            const savedUser = await user.save();
+            return res.status(201).json(savedUser);
+        } else {
+            return res.status(404).json({ message: 'not found' });
+        }
+    } catch (error) {
+        return res.status(500).json({ error });
+    }
 };
 
 const deleteUser = (req: Request, res: Response, next: NextFunction) => {

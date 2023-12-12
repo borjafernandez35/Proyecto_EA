@@ -35,21 +35,32 @@ export async function signin(req: Request, res: Response): Promise<Response> {
         expiresIn: 60 * 60 * 24
     });
 
-    return res.status(200).json({ auth: true, token });
+    return res.status(200).json({ auth: true, token, user });
 }
 
 export async function signup(req: Request, res: Response): Promise<Response> {
     //const { username, email, password, rol } = req.body;
-    const { userName, email, password, role } = req.body;
+    const { userName, email, password, role, birthDate, avatar, createdEventsId, joinedEventsId, idCategories, description } = req.body;
     console.log(userName, email, password);
 
     const user = new User({
         userName,
         email,
         password,
-        role
+        role,
+        birthDate,
+        avatar,
+        createdEventsId,
+        joinedEventsId,
+        idCategories,
+        description
     });
-
+    user.birthDate = new Date('2023-12-07T12:34:56.000Z');
+    user.createdEventsId = [];
+    user.joinedEventsId = [];
+    user.idCategories = [];
+    user.description = 'Hi, I am using SocialGroove';
+    user.avatar = '';
     user.role = 'public';
 
     try {
@@ -76,7 +87,7 @@ export async function signup(req: Request, res: Response): Promise<Response> {
                 expiresIn: 60 * 60 * 24
             });
 
-            return res.status(200).json({ auth: true, token });
+            return res.status(200).json({ auth: true, token, user });
         }
     } catch (error) {
         console.error(error);

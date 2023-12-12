@@ -35,6 +35,18 @@ const readEvent = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
+const getEventsUser = (req: Request, res: Response, next: NextFunction) => {
+    const url = req.url;
+    const urlSplitted: string[] = url.split('/');
+    const idUser = urlSplitted[2];
+
+    return Event.find({ idUser: idUser })
+        .then((events) => {
+            res.status(200).json(events);
+        })
+        .catch((error) => res.status(500).json({ error }));
+};
+
 const readAll = (req: Request, res: Response, next: NextFunction) => {
     return Event.find()
         .populate('idUser')
@@ -106,4 +118,4 @@ const deleteEvent = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-export default { createEvent, readEvent, readAll, updateEvent, deleteEvent };
+export default { createEvent, readEvent, readAll, updateEvent, deleteEvent, getEventsUser };
