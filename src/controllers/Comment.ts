@@ -3,13 +3,14 @@ import mongoose from 'mongoose';
 import Comment from '../models/Comment';
 
 const createComment = (req: Request, res: Response, next: NextFunction) => {
-    const { userId, text, punctuation } = req.body;
+    const { userId, text, punctuation, date } = req.body;
 
     const comment = new Comment({
         _id: new mongoose.Types.ObjectId(),
         userId,
         text,
-        punctuation
+        punctuation,
+        date
     });
 
     return comment
