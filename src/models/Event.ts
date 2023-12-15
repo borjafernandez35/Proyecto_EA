@@ -3,7 +3,10 @@ import { IUser } from './User';
 import { ICategory } from './Category';
 
 export interface IEvent {
-    coordinates: [number, number];
+    coordinates: {
+        type: String,
+        coordinates: [number, number];
+    };
     eventName: string;
     idCategory: ICategory;
     date: Date;
@@ -20,7 +23,17 @@ export interface IEventModel extends IEvent, Document {}
 
 const EventSchema: Schema = new Schema(
     {
-        coordinates: { type: [Number], required: true },
+        coordinates: {
+            type: {
+                type: String,
+                enum: ['Point'], //'location.type' ha de ser 'Point'
+                required: true
+            },
+            coordinates: {
+                type: [Number], //array de numeros - [x, y]
+                required: true
+            }
+        },
         idCategory: [{ type: Schema.Types.ObjectId, required: false, ref: 'Category' }],
         date: { type: Date, required: true },
         eventName: { type: String, required: true },

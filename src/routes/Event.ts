@@ -10,5 +10,6 @@ router.get('/user/:idUser', controller.getEventsUser);
 router.get('/', controller.readAll);
 router.put('/:eventId', ValidateSchema(Schemas.event.update), controller.updateEvent);
 router.delete('/:eventId', controller.deleteEvent);
+router.get('/nearby', controller.getNearbyEvents);// nueva ruta de busqueda geoespacial
 
 export = router;

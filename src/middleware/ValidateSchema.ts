@@ -53,7 +53,10 @@ export const Schemas = {
             idUser: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .optional(),
-            coordinates: Joi.array().items(Joi.number().required()), //limitar a dos
+            coordinates: Joi.object({
+                type: Joi.string().valid('Point').required(),
+                coordinates: Joi.array().length(2).items(Joi.number()).required()
+            }),
             eventName: Joi.string().required(),
             idCategory: Joi.array().items(Joi.string().optional()),
             date: Joi.date().required(),
@@ -68,7 +71,10 @@ export const Schemas = {
             idUser: Joi.string()
                 .regex(/^[0-9a-fA-F]{24}/)
                 .optional(),
-            coordinates: Joi.array().items(Joi.number().optional()), //limitar a dos
+            coordinates: Joi.object({
+                type: Joi.string().valid('Point').required(),
+                coordinates: Joi.array().length(2).items(Joi.number()).required()
+            }),
             eventName: Joi.string().optional(),
             idCategory: Joi.array().items(Joi.string().optional()),
             date: Joi.date().optional(),
