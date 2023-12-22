@@ -10,8 +10,6 @@ interface AuthenticatedRequest extends Request {
 }
 
 export async function verifyToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
-    console.log('verifyToken');
-
     const token = req.header('x-access-token');
     if (!token) {
         return res.status(403).json({ message: 'No token provided' });
