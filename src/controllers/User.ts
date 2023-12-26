@@ -54,7 +54,8 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
             if (user.password === req.body.password) {
                 user.set(req.body);
             } else {
-                user.password = await user.encryptPassword(req.body.password);
+                req.body.password = await user.encryptPassword(req.body.password);
+                user.set(req.body);
             }
 
             const savedUser = await user.save();
