@@ -55,11 +55,24 @@ const updateComment = (req: Request, res: Response, next: NextFunction) => {
 };
 
 const deleteComment = (req: Request, res: Response, next: NextFunction) => {
-    const commentId = req.params.commentId;
 
-    return Comment.findByIdAndDelete(commentId)
-        .then((comment) => (comment ? res.status(201).json({ comment, message: 'Deleted' }) : res.status(404).json({ message: 'not found' })))
-        .catch((error) => res.status(500).json({ error }));
+    const commentId = req.params.commentId;
+    const userIdFromToken = req.userId; // Asegúrate de que este campo se establezca en el middleware de autenticación
+
+    console.log(`Attempting to delete comment with ID: ${commentId} by user: ${userIdFromToken}`);
+
+    Comment.findById(commentId).then((comment) => {
+        if (!comment) {
+            return res.status(404).json({ message: 'Comment not found' });
+        }
+        if (comment.userId.toString() !== userIdFromToken) {
+            return res.status(403).json({ message: 'Unauthorized' });
+        }
+
+        return Comment.findByIdAndDelete(commentId)
+            .then(() => res.status(200).json({ message: 'Deleted' }))
+            .catch((error) => res.status(500).json({ error }));
+    });
 };
 
 export default { createComment, readComment, readAll, updateComment, deleteComment };
