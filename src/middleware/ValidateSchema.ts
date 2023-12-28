@@ -43,7 +43,7 @@ export const Schemas = {
             avatar: Joi.string().optional(),
             createdEventsId: Joi.array().items(Joi.string().optional()),
             joinedEventsId: Joi.array().items(Joi.string().optional()),
-            idCategories: Joi.array().items(Joi.string().optional()),
+            idCategories: (Joi.string().optional()), //es un array pero se hace el convert
             role: Joi.string().optional(),
             description: Joi.string().optional()
         })

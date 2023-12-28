@@ -29,7 +29,8 @@ const UserSchema: Schema = new Schema(
         avatar: { type: String, required: false },
         createdEventsId: [{ type: Schema.Types.ObjectId, required: false, ref: 'Event' }],
         joinedEventsId: [{ type: Schema.Types.ObjectId, required: false, ref: 'Event' }],
-        idCategories: [{ type: Schema.Types.ObjectId, required: false, ref: 'Category' }],
+        idCategories: [{ type: String, required: false }],
+        //idCategories: [{ type: Schema.Types.ObjectId, required: false, ref: 'Category' }],
         role: { type: String, required: false },
         description: { type: String, required: false }
     },

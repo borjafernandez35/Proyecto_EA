@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/', ValidateSchema(Schemas.user.create), controller.createUser);
 router.get('/:userId', controller.readUser);
 router.get('/', controller.readAll);
-router.put('/:userId', [verifyToken], ValidateSchema(Schemas.user.update), [verifyToken], controller.updateUser);
+router.put('/:userId', [verifyToken], ValidateSchema(Schemas.user.update), controller.updateUser);
 router.delete('/:userId', [verifyToken], controller.deleteUser);
 
 export = router;

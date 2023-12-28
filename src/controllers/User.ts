@@ -57,7 +57,12 @@ const updateUser = async (req: Request, res: Response, next: NextFunction) => {
                 req.body.password = await user.encryptPassword(req.body.password);
                 user.set(req.body);
             }
-
+            if (req.body.idCategories) {
+                console.log(req.body.idCategories);
+                const array: string[] = JSON.parse(req.body.idCategories);
+                user.set({ idCategories: array });
+                console.log(user.idCategories);
+            }
             const savedUser = await user.save();
             return res.status(201).json(savedUser);
         } else {
