@@ -1,4 +1,4 @@
-import express, { RequestHandler } from 'express';
+import express from 'express';
 import http from 'http';
 import mongoose from 'mongoose';
 import { config } from './config/config';
@@ -10,27 +10,29 @@ import chatRoutes from './routes/Chat';
 import commentRoutes from './routes/Comment';
 import messageRoutes from './routes/Message';
 import cors from 'cors';
-import authRoutes from './routes/auth'; // Importa las rutas de autenticación
+import authRoutes from './routes/auth';
 import { Server } from 'socket.io';
 
-// Inicializaciones
-const app: express.Application = express();
+const app = express();
+const server = http.createServer(app);
+const io = new Server(server);
 
-/** Conéctate a Mongo e inicia el servidor */
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(cors());
+
 mongoose
     .connect(config.mongo.url, { retryWrites: true, w: 'majority' })
     .then(() => {
         Logging.info('Connected to MongoDB');
-        startServer(); // Función para iniciar el servidor solo si se conecta mongoose
+        startServer();
     })
     .catch((error) => {
         Logging.error('Unable to connect to MongoDB');
         Logging.error(error);
     });
 
-/** Inicia el servidor si se conecta Mongoose */
 export const startServer = () => {
-    // Registra la solicitud
     app.use((req, res, next) => {
         Logging.info(`Incoming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
 
@@ -41,53 +43,37 @@ export const startServer = () => {
         next();
     });
 
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
-
-    app.use(cors());
-
-    /** Rutas */
     app.use('/users', userRoutes);
     app.use('/events', eventRoutes);
     app.use('/categories', categoryRoutes);
     app.use('/chats', chatRoutes);
     app.use('/comments', commentRoutes);
     app.use('/messages', messageRoutes);
-    app.use('/auth', authRoutes); // Usa las rutas de autenticación
+    app.use('/auth', authRoutes);
 
-    /** Healthcheck */
     app.get('/ping', (req, res, next) => res.status(200).json({ message: 'pong' }));
 
-    /** Manejo de errores */
     app.use((req, res, next) => {
         const error = new Error('Not found');
         Logging.error(error);
-
-        res.status(404).json({
-            message: error.message
-        });
+        res.status(404).json({ message: error.message });
     });
 
-    // http.createServer(router).listen(config.server.port, () => Logging.info(`Server is running on port ${config.server.port}`));
-    const server = http.createServer(app);
-    const io = new Server(server);
-
-    const connectedUser = new Set();
     io.on('connection', (socket) => {
         console.log('Connected successfully', socket.id);
-        io.emit('connected-user', connectedUser.size);
-        connectedUser.add(socket.id);
+
+        socket.on('join-room', (room) => {
+            socket.join(room);
+            console.log(`Socket ${socket.id} joined room ${room}`);
+        });
+
         socket.on('disconnect', () => {
-            console.log('Disconnected, socket.id');
-            connectedUser.delete(socket.id);
-            io.emit('connected-user', connectedUser.size);
+            console.log('Disconnected', socket.id);
         });
 
         socket.on('message', (msg) => {
             Logging.info(`Message: ${msg}`);
-            io.emit('chat message', msg);
-            console.log(msg);
-            socket.broadcast.emit('message-receive', msg);
+            io.to(msg.room).emit('message-receive', msg);
         });
     });
 
