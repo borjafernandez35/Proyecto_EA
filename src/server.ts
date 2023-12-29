@@ -32,6 +32,9 @@ mongoose
         Logging.error(error);
     });
 
+// Mantén un mapa para seguir a los usuarios conectados en cada sala
+const connectedUsersByRoom = new Map();
+
 export const startServer = () => {
     app.use((req, res, next) => {
         Logging.info(`Incoming - METHOD: [${req.method}] - URL: [${req.url}] - IP: [${req.socket.remoteAddress}]`);
@@ -59,20 +62,57 @@ export const startServer = () => {
         res.status(404).json({ message: error.message });
     });
 
-    io.on('connection', (socket) => {
+    io.on('connection', function (socket) {
         console.log('Connected successfully', socket.id);
 
-        socket.on('join-room', (room) => {
+        // Cuando un usuario se une a una sala
+        socket.on('join-room', function (room) {
             socket.join(room);
+
+            // Inicializa el conjunto de usuarios para la sala si es necesario
+            if (!connectedUsersByRoom.has(room)) {
+                connectedUsersByRoom.set(room, new Set());
+            }
+
+            connectedUsersByRoom.get(room).add(socket.id);
+
+            // Envia el conteo de usuarios a todos los clientes en la sala
+            io.to(room).emit('connected-user', connectedUsersByRoom.get(room).size + 1);
             console.log(`Socket ${socket.id} joined room ${room}`);
         });
 
-        socket.on('disconnect', () => {
+        // Cuando un usuario se desconecta o sale de la sala
+        socket.on('leave-room', function (room) {
+            socket.leave(room);
+
+            // Asegúrate de que el usuario pertenezca a al menos una sala
+            if (connectedUsersByRoom.has(room)) {
+                connectedUsersByRoom.get(room).delete(socket.id);
+
+                // Envia el conteo de usuarios actualizado a todos los clientes en la sala
+                io.to(room).emit('connected-user', connectedUsersByRoom.get(room).size + 1);
+            }
+
             console.log('Disconnected', socket.id);
         });
 
-        socket.on('message', (msg) => {
-            Logging.info(`Message: ${msg}`);
+        socket.on('disconnect', function () {
+            // Asegúrate de que el usuario pertenezca a al menos una sala
+            const rooms = Object.keys(socket.rooms);
+            rooms.forEach(function (room) {
+                if (connectedUsersByRoom.has(room)) {
+                    connectedUsersByRoom.get(room).delete(socket.id);
+
+                    // Envia el conteo de usuarios actualizado a todos los clientes en la sala
+                    io.to(room).emit('connected-user', connectedUsersByRoom.get(room).size - 2);
+                }
+            });
+
+            console.log('Disconnected', socket.id);
+        });
+
+        socket.on('message', function (msg) {
+            Logging.info(`Received message: ${JSON.stringify(msg)}`);
             io.to(msg.room).emit('message-receive', msg);
         });
     });
