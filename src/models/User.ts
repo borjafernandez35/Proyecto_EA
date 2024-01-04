@@ -1,5 +1,6 @@
 import mongoose, { Document, Schema } from 'mongoose';
 import bcrypt from 'bcrypt';
+import { validatePasswordStrength } from '../controllers/User';
 
 export interface IUser {
     userName: string;
@@ -39,14 +40,14 @@ const UserSchema: Schema = new Schema(
         timestamps: true
     }
 );
+
 UserSchema.methods.encryptPassword = async (password: string) => {
     const salt = await bcrypt.genSalt(10);
     return bcrypt.hash(password, salt);
 };
+
 UserSchema.methods.validatePassword = async function (password: string) {
     return bcrypt.compare(password, this.password);
 };
-
-UserSchema.methods.validateEmail = async function (email: string) {};
 
 export default mongoose.model<IUserModel>('User', UserSchema);

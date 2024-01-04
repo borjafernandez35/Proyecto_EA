@@ -1,9 +1,33 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-
 import User from '../models/User';
 import IJwtPayload from '../models/JWTPayload';
 import { config } from '../config/config';
+
+// Función para validar la fortaleza de la contraseña
+export const validatePasswordStrength = (password: string) => {
+    if (password.length < 8) {
+        return 400;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+        return 400;
+    }
+
+    if (!/[a-z]/.test(password)) {
+        return 400;
+    }
+
+    if (!/\d/.test(password)) {
+        return 400;
+    }
+
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        return 400;
+    }
+
+    return null;
+};
 
 const _SECRET: string = 'api+jwt';
 
@@ -26,11 +50,7 @@ export async function signin(req: Request, res: Response): Promise<Response> {
     if (!validPassword) {
         return res.status(401).json({ auth: false, token: null });
     }
-    /*
-    const token = jwt.sign({ id: user._id, rol: user.rol }, config.secret, {
-        expiresIn: 60 * 60 * 24
-    });
-*/
+
     const token = jwt.sign({ id: user._id }, config.secret, {
         expiresIn: 60 * 60 * 24
     });
@@ -39,7 +59,6 @@ export async function signin(req: Request, res: Response): Promise<Response> {
 }
 
 export async function signup(req: Request, res: Response): Promise<Response> {
-    //const { username, email, password, rol } = req.body;
     const { userName, email, password, role, birthDate, avatar, createdEventsId, joinedEventsId, idCategories, description } = req.body;
     console.log(userName, email, password);
 
@@ -60,7 +79,7 @@ export async function signup(req: Request, res: Response): Promise<Response> {
     user.joinedEventsId = [];
     user.idCategories = [];
     user.description = 'Hi, I am using SocialGroove';
-    user.avatar = 'https://res.cloudinary.com/dsivbpzlp/image/upload/v1703593654/profilePics/ykj88nlthv29rkdg69dk.webp';
+    user.avatar = '';
     user.role = 'public';
 
     try {
@@ -77,12 +96,6 @@ export async function signup(req: Request, res: Response): Promise<Response> {
             await user.save();
 
             // Ahora, después de registrarse, generamos un token y lo devolvemos
-            /*
-    const token = jwt.sign({ id: user._id, rol: user.rol }, config.secret, {
-        expiresIn: 60 * 60 * 24
-    });
-    */
-            //Creamos el token
             const token = jwt.sign({ id: user._id }, config.secret, {
                 expiresIn: 60 * 60 * 24
             });
@@ -91,7 +104,7 @@ export async function signup(req: Request, res: Response): Promise<Response> {
         }
     } catch (error) {
         console.error(error);
-        return res.status(500).json({ error: 'Error interno del servidor' });
+        return res.status(500).json({ error: 'Internal server error' });
     }
 }
 
@@ -104,7 +117,7 @@ export async function priv(req: AuthenticatedRequest, res: Response): Promise<Re
         } else if (user.role == 'admin') {
             res.json('Your role is: ' + user.role + '  ' + user.userName.toUpperCase() + ':  Welcome to the admin section!!! ');
         } else {
-            return res.status(404).send('You are not an admin'); //si no enviamos el token no recibimos info
+            return res.status(404).send('You are not an admin');
         }
 
         const { password, ...userWithoutPassword } = user.toObject();
@@ -117,11 +130,12 @@ export async function priv(req: AuthenticatedRequest, res: Response): Promise<Re
 
 export async function publ(req: AuthenticatedRequest, res: Response): Promise<Response> {
     try {
-        const user = await User.findById(req.idUser, { password: 0 }); //pedimos que no devuelva el password
+        const user = await User.findById(req.idUser, { password: 0 });
+
         if (!user) {
-            return res.status(404).send('No user found'); //si no enviamos el token no recibimos info
+            return res.status(404).send('No user found');
         }
-        res.json('you are in the public section: ' + user.userName); //retornamos el json del usuario
+        res.json('you are in the public section: ' + user.userName);
 
         const { password, ...userWithoutPassword } = user.toObject();
         return res.json({ user });
@@ -130,6 +144,7 @@ export async function publ(req: AuthenticatedRequest, res: Response): Promise<Re
         return res.status(500).json({ error: 'Error interno del servidor' });
     }
 }
+
 export async function me(req: AuthenticatedRequest, res: Response): Promise<Response> {
     try {
         return res.json('me');
