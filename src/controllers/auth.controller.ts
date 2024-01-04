@@ -79,7 +79,7 @@ export async function signup(req: Request, res: Response): Promise<Response> {
     user.joinedEventsId = [];
     user.idCategories = [];
     user.description = 'Hi, I am using SocialGroove';
-    user.avatar = '';
+    user.avatar = 'https://res.cloudinary.com/dsivbpzlp/image/upload/v1703593654/profilePics/ykj88nlthv29rkdg69dk.webp';
     user.role = 'public';
 
     try {
