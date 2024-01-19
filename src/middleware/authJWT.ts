@@ -5,8 +5,8 @@ import IJwtPayload from '../models/JWTPayload';
 
 const _SECRET: string = 'api+jwt';
 
-interface AuthenticatedRequest extends Request {
-    idUser?: string; // Ajustado para alinearse con tu esquema de usuario
+export interface AuthenticatedRequest extends Request {
+    idUser?: string;
 }
 
 export async function verifyToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
@@ -18,8 +18,8 @@ export async function verifyToken(req: AuthenticatedRequest, res: Response, next
     try {
         const decoded = jwt.verify(token, _SECRET) as IJwtPayload;
         console.log('verifyToken');
-        console.log('Decoded JWT:', decoded);
         req.idUser = decoded.id; // Esto asigna el ID de usuario decodificado del JWT al objeto req
+        console.log('req.idUser:', req.idUser);
 
         const user = await User.findById(req.idUser, { password: 0 });
         if (!user) {
