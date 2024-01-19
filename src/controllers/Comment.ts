@@ -1,6 +1,8 @@
 import { NextFunction, Request, Response } from 'express';
 import mongoose from 'mongoose';
 import Comment from '../models/Comment';
+import { AuthenticatedRequest } from '../middleware/authJWT';
+
 
 const createComment = (req: Request, res: Response, next: NextFunction) => {
     const { userId, text, punctuation, date } = req.body;
@@ -54,12 +56,12 @@ const updateComment = (req: Request, res: Response, next: NextFunction) => {
         .catch((error) => res.status(500).json({ error }));
 };
 
-const deleteComment = (req: Request, res: Response, next: NextFunction) => {
-    const commentId = req.params.commentId;
+const deleteComment = (req: AuthenticatedRequest, res: Response, next: NextFunction) => {
 
-    return Comment.findByIdAndDelete(commentId)
-        .then((comment) => (comment ? res.status(201).json({ comment, message: 'Deleted' }) : res.status(404).json({ message: 'not found' })))
-        .catch((error) => res.status(500).json({ error }));
-};
+    const commentId = req.params.commentId;
+        return Comment.findByIdAndDelete(commentId)
+            .then(() => res.status(200).json({ message: 'Deleted' }))
+            .catch((error) => res.status(500).json({ error }));
+    };
 
 export default { createComment, readComment, readAll, updateComment, deleteComment };

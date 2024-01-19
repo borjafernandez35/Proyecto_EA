@@ -5,22 +5,23 @@ import IJwtPayload from '../models/JWTPayload';
 
 const _SECRET: string = 'api+jwt';
 
-interface AuthenticatedRequest extends Request {
-    idUser?: string; // Puedes ajustar el tipo según el tipo real de idUser
+export interface AuthenticatedRequest extends Request {
+    idUser?: string;
 }
 
 export async function verifyToken(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     const token = req.header('x-access-token');
+    console.log(`Received token: ${token}`);
     if (!token) {
         return res.status(403).json({ message: 'No token provided' });
     }
     try {
         const decoded = jwt.verify(token, _SECRET) as IJwtPayload;
         console.log('verifyToken');
-        req.idUser = decoded.id;
+        req.idUser = decoded.id; // Esto asigna el ID de usuario decodificado del JWT al objeto req
+        console.log('req.idUser:', req.idUser);
 
         const user = await User.findById(req.idUser, { password: 0 });
-
         if (!user) {
             return res.status(404).json({ message: 'No user found' });
         }
@@ -35,6 +36,9 @@ export async function verifyToken(req: AuthenticatedRequest, res: Response, next
 export async function isOwner(req: AuthenticatedRequest, res: Response, next: NextFunction) {
     try {
         const user = await User.findById(req.idUser);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
 
         next();
     } catch (error) {
